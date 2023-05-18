@@ -1,8 +1,9 @@
 import type { Adapter } from "next-auth/adapters";
 import type { Knex } from "knex";
 
-/*
+export { Adapter, Knex };
 
+/*
 Auth.js requires a specific database schema. Use the following Knex.js
 migration to create it. Note: This migration is configured for MariaDB. It may
 work out-of-the-box with other database engines, or you may need to modify it
@@ -72,7 +73,7 @@ export const down = (knex) => {
 /**
  * A Next-Auth adapter for Knex.js
  *
- * @param knex - The Knex.js connection
+ * @param {Knex} knex - The Knex.js connection
  * @param options - Auth.js options
  * @returns {Adapter} - An Auth.js adapter for Knex.js
  */
