@@ -1,0 +1,36 @@
+{
+  "name": "authjs-knexjs-adapter",
+  "version": "0.1.0",
+  "description": "An adapter for Auth.js/NextAuth.js to allow you to connect to any database service via Knex.js.",
+  "exports": "./index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc"
+  },
+  "keywords": [
+    "auth.js",
+    "auth",
+    "authentication",
+    "database",
+    "knex.js",
+    "knex",
+    "next-auth.js",
+    "next-auth",
+    "nextauth.js",
+    "nextauth"
+  ],
+  "author": "Travis Horn <travis@travishorn.com> (https://travishorn.com/)",
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": "^12.20.0 || ^14.13.1 || >=16.0.0"
+  },
+  "files": [
+    "index.js"
+  ],
+  "devDependencies": {
+    "knex": "^2.4.2",
+    "next-auth": "^4.22.1",
+    "typescript": "^5.0.4"
+  }
+}
