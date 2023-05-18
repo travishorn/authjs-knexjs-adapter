@@ -21,6 +21,14 @@
   ],
   "author": "Travis Horn <travis@travishorn.com> (https://travishorn.com/)",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/travishorn/authjs-knexjs-adapter.git"
+  },
+  "bugs": {
+    "url": "https://github.com/travishorn/authjs-knexjs-adapter/issues"
+  },
+  "homepage": "https://github.com/travishorn/authjs-knexjs-adapter#readme",
   "type": "module",
   "engines": {
     "node": "^12.20.0 || ^14.13.1 || >=16.0.0"
