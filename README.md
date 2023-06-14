@@ -3,6 +3,10 @@
 An adapter for Auth.js/NextAuth.js to allow you to connect to any database
 service via Knex.js.
 
+<p align="center">
+  <img src="./logo.png" />
+</p>
+
 ## Installation
 
 Install the package as a dependency in your project.
