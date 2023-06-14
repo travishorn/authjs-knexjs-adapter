@@ -11,13 +11,15 @@ Install the package as a dependency in your project.
 npm install authjs-knexjs-adapter
 ```
 
+### Next.js
+
 Import it into `pages/api/auth/[...nextauth].ts`, give it a Knex.js database
 connection, and set it as the `adapter` in your `NextAuth()` configuration.
 
 ```javascript
-import NextAuth from "next-auth";
-import knex from "knex";
 import { KnexAdapter } from "authjs-knexjs-adapter";
+import knex from "knex";
+import NextAuth from "next-auth";
 
 const db = knex({
   client: "mysql2",
@@ -36,74 +38,48 @@ export default NextAuth({
 });
 ```
 
-## Database Schema
+### SvelteKit
 
-Auth.js requires a specific database schema. Use the following Knex.js
-migration to create it. Note: This migration is configured for MariaDB. It may
-work out-of-the-box with other database engines, or you may need to modify it
-according to your application.
+Import it into `src/hooks.server.js`, give it a Knex.js database connection, and
+set it as the `adapter` in your `SvelteKitAuth` configuration.
 
 ```javascript
-export const up = (knex) => {
-  return knex.schema
-    .createTable("User", (table) => {
-      table.uuid("id").defaultTo(knex.raw("(UUID())"));
-      table.text("name");
-      table.text("email").unique();
-      table.timestamp("emailVerified");
-      table.text("image");
+import { DB_HOST, DB_PORT, DB_USER, DB_PASSWORD, DB_DATABASE } from '$env/static/private';
+import { KnexAdapter } from 'authjs-knexjs-adapter';
+import { SvelteKitAuth } from '@auth/sveltekit';
+import knex from "knex";
 
-      table.primary("id");
-    })
-    .createTable("Session", (table) => {
-      table.uuid("id").defaultTo(knex.raw("(UUID())"));
-      table.timestamp("expires");
-      table.text("sessionToken").notNullable().unique();
-      table.uuid("userId");
+const db = knex({
+	client: 'mysql2',
+	connection: {
+		host: DB_HOST,
+		port: parseInt(DB_PORT ?? '3306', 10),
+		user: DB_USER,
+		password: DB_PASSWORD,
+		database: DB_DATABASE
+	}
+});
 
-      table.primary("id");
-
-      table.foreign("userId").references("id").on("User");
-    })
-    .createTable("Account", (table) => {
-      table.uuid("id").defaultTo(knex.raw("(UUID())"));
-      table.uuid("userId");
-      table.text("type").notNullable();
-      table.text("provider").notNullable();
-      table.text("providerAccountId").notNullable();
-      table.text("refresh_token");
-      table.text("access_token");
-      table.bigInteger("expires_at");
-      table.text("token_type");
-      table.text("scope");
-      table.text("id_token");
-      table.text("session_state");
-
-      table.primary("id");
-
-      table.unique(["provider", "providerAccountId"]);
-
-      table.foreign("userId").references("id").on("User");
-    })
-    .createTable("VerificationToken", (table) => {
-      table.text("identifier");
-      table.string("token", 255);
-      table.timestamp("expires").notNullable();
-
-      table.primary("token");
-
-      table.unique(["token", "identifier"]);
-    });
-};
-
-export const down = (knex) => {
-  return knex.schema
-    .dropTable("VerificationToken")
-    .dropTable("Account")
-    .dropTable("Session")
-    .dropTable("User");
-};
+export const handle = SvelteKitAuth({
+	trustHost: true,
+	adapter: KnexAdapter(db),
+	providers: [ /* your providers */ ],
+});
 ```
+
+## Database Schema
+
+Auth.js requires a specific database schema. There are two options provided here
+to create this schema:
+
+- [A Knex.js migration file](./migrations/migration.js)
+- [A schema dump SQL file](./migrations/migration.sql)
+
+Use either option or create the database schema some other way.
+
+Note: These files are configured for MariaDB. They may work out-of-the-box with
+other database engines, or you may need to modify them according to your
+application.
 
 ## License
 
