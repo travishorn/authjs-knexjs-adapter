@@ -15,10 +15,14 @@ Install the package as a dependency in your project.
 npm install authjs-knexjs-adapter
 ```
 
+Note: Make sure you also install `knex` and the appropriate database library for
+your environment (e.g. `mysql2`).
+
 ### Next.js
 
-Import it into `pages/api/auth/[...nextauth].ts`, give it a Knex.js database
-connection, and set it as the `adapter` in your `NextAuth()` configuration.
+Import the adapter into `pages/api/auth/[...nextauth].ts`, give it a Knex.js
+database connection, and set it as the `adapter` in your `NextAuth()`
+configuration.
 
 ```javascript
 import { KnexAdapter } from "authjs-knexjs-adapter";
@@ -44,8 +48,8 @@ export default NextAuth({
 
 ### SvelteKit
 
-Import it into `src/hooks.server.js`, give it a Knex.js database connection, and
-set it as the `adapter` in your `SvelteKitAuth` configuration.
+Import the adapter into `src/hooks.server.js`, give it a Knex.js database
+connection, and set it as the `adapter` in your `SvelteKitAuth` configuration.
 
 ```javascript
 import { DB_HOST, DB_PORT, DB_USER, DB_PASSWORD, DB_DATABASE } from '$env/static/private';
@@ -65,7 +69,6 @@ const db = knex({
 });
 
 export const handle = SvelteKitAuth({
-	trustHost: true,
 	adapter: KnexAdapter(db),
 	providers: [ /* your providers */ ],
 });

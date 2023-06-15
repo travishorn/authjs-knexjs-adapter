@@ -33,11 +33,12 @@
   "engines": {
     "node": "^12.20.0 || ^14.13.1 || >=16.0.0"
   },
+  "types": "./index.d.ts",
   "files": [
-    "index.js",
-    "types/index.d.ts"
+    "*.js",
+    "*.d.ts*",
+    "src"
   ],
-  "types": "types/index.d.ts",
   "devDependencies": {
     "knex": "^2.4.2",
     "next-auth": "^4.22.1",
