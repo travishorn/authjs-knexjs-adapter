@@ -1,3 +1,13 @@
+CREATE TABLE `User` (
+  `id` char(36) NOT NULL DEFAULT uuid(),
+  `name` text DEFAULT NULL,
+  `email` text DEFAULT NULL,
+  `emailVerified` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `image` text DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `user_email_unique` (`email`) USING HASH
+);
+
 CREATE TABLE `Account` (
   `id` char(36) NOT NULL DEFAULT uuid(),
   `userId` char(36) DEFAULT NULL,
@@ -27,17 +37,6 @@ CREATE TABLE `Session` (
   KEY `session_userid_foreign` (`userId`),
   KEY `session_sessiontoken_index` (`sessionToken`(768)),
   CONSTRAINT `session_userid_foreign` FOREIGN KEY (`userId`) REFERENCES `User` (`id`)
-);
-
-CREATE TABLE `User` (
-  `id` char(36) NOT NULL DEFAULT uuid(),
-  `name` text DEFAULT NULL,
-  `email` text DEFAULT NULL,
-  `emailVerified` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `image` text DEFAULT NULL,
-  `siteAdmin` tinyint(1) NOT NULL DEFAULT 0,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `user_email_unique` (`email`) USING HASH
 );
 
 CREATE TABLE `VerificationToken` (
