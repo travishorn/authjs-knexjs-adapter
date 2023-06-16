@@ -46,15 +46,15 @@ export function KnexAdapter(knex: Knex): Adapter {
       // Return the user data
       return dbUsers[0];
     },
-    async getUserByAccount({ providerAccountId, provider }) {
+    async getUserByAccount({ provider, providerAccountId }) {
       // Get a user row based on the associated account given the unique
       // provider account id and provider
       const dbUsers = await knex("User")
         .select("User.*")
         .join("Account", "Account.userId", "=", "User.id")
         .where({
+          "Account.provider": provider,
           "Account.providerAccountId": providerAccountId,
-          "Account.provider": provider
         })
         .limit(1);
 
@@ -103,9 +103,9 @@ export function KnexAdapter(knex: Knex): Adapter {
       // Return the account data
       return dbAccounts[0];
     },
-    async unlinkAccount({ providerAccountId, provider }) {
+    async unlinkAccount({ provider, providerAccountId }) {
       // Delete an account row based on provider information
-      await knex("Account").where({ providerAccountId, provider }).del();
+      await knex("Account").where({ provider, providerAccountId }).del();
     },
     async createSession(session) {
       // Insert a session row into the `Session` table
