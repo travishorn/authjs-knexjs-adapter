@@ -47,19 +47,15 @@ export function KnexAdapter(knex: Knex): Adapter {
       return dbUsers[0];
     },
     async getUserByAccount({ providerAccountId, provider }) {
-      // Get an account row based on the provider account information
-      const dbAccounts = await knex("Account")
-        .select("*")
-        .where({ providerAccountId, provider })
-        .limit(1);
-
-      // If no account was found, return null
-      if (dbAccounts.length === 0) return null;
-
-      // If an account was found, get a user row based on the account
+      // Get a user row based on the associated account given the unique
+      // provider account id and provider
       const dbUsers = await knex("User")
-        .select("*")
-        .where({ id: dbAccounts[0].userId })
+        .select("User.*")
+        .join("Account", "Account.userId", "=", "User.id")
+        .where({
+          "Account.providerAccountId": providerAccountId,
+          "Account.provider": provider
+        })
         .limit(1);
 
       // If no user was found, return null
