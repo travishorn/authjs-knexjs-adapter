@@ -17,6 +17,7 @@ export const up = (knex) => {
       table.text("refresh_token");
       table.text("access_token");
       table.bigInteger("expires_at");
+      table.bigInteger("expires_in");
       table.text("token_type");
       table.text("scope");
       table.text("id_token");

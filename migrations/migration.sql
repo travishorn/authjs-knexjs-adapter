@@ -17,6 +17,7 @@ CREATE TABLE `Account` (
   `refresh_token` text DEFAULT NULL,
   `access_token` text DEFAULT NULL,
   `expires_at` bigint(20) DEFAULT NULL,
+  `expires_in` bigint(20) DEFAULT NULL,
   `token_type` text DEFAULT NULL,
   `scope` text DEFAULT NULL,
   `id_token` text DEFAULT NULL,
