@@ -2,7 +2,7 @@ CREATE TABLE `User` (
   `id` char(36) NOT NULL DEFAULT uuid(),
   `name` text DEFAULT NULL,
   `email` text DEFAULT NULL,
-  `emailVerified` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `emailVerified` timestamp DEFAULT NULL,
   `image` text DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `user_email_unique` (`email`) USING HASH
@@ -29,20 +29,19 @@ CREATE TABLE `Account` (
 
 CREATE TABLE `Session` (
   `id` char(36) NOT NULL DEFAULT uuid(),
-  `expires` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `expires` timestamp NOT NULL,
   `sessionToken` text NOT NULL,
   `userId` char(36) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `session_sessiontoken_unique` (`sessionToken`) USING HASH,
   KEY `session_userid_foreign` (`userId`),
-  KEY `session_sessiontoken_index` (`sessionToken`(768)),
   CONSTRAINT `session_userid_foreign` FOREIGN KEY (`userId`) REFERENCES `User` (`id`)
 );
 
 CREATE TABLE `VerificationToken` (
   `identifier` text DEFAULT NULL,
   `token` varchar(255) NOT NULL,
-  `expires` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `expires` timestamp NOT NULL,
   PRIMARY KEY (`token`),
   UNIQUE KEY `verificationtoken_token_identifier_unique` (`token`,`identifier`) USING HASH
 );

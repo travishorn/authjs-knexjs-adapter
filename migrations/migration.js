@@ -6,7 +6,6 @@ export const up = (knex) => {
       table.text("email").unique();
       table.timestamp("emailVerified");
       table.text("image");
-
       table.primary("id");
     })
     .createTable("Account", (table) => {
@@ -22,30 +21,23 @@ export const up = (knex) => {
       table.text("scope");
       table.text("id_token");
       table.text("session_state");
-
       table.primary("id");
-
       table.unique(["provider", "providerAccountId"]);
-
       table.foreign("userId").references("id").on("User");
     })
     .createTable("Session", (table) => {
       table.uuid("id").defaultTo(knex.raw("(UUID())"));
-      table.timestamp("expires");
+      table.timestamp("expires").notNullable();
       table.text("sessionToken").notNullable().unique();
       table.uuid("userId");
-
       table.primary("id");
-
       table.foreign("userId").references("id").on("User");
     })
     .createTable("VerificationToken", (table) => {
       table.text("identifier");
       table.string("token", 255);
       table.timestamp("expires").notNullable();
-
       table.primary("token");
-
       table.unique(["token", "identifier"]);
     });
 };
