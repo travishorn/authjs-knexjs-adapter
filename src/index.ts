@@ -117,6 +117,12 @@ export function KnexAdapter(knex: Knex): Adapter {
         .where({ sessionToken: session.sessionToken })
         .limit(1);
 
+      // Some database engines store datetimes as a numerical Unix epoch. If so,
+      // convert it to a JavaScript date.
+      if (typeof dbSessions[0].expires === "number") {
+        dbSessions[0].expires = new Date(dbSessions[0].expires);
+      }
+
       // Return the session data
       return dbSessions[0];
     },
@@ -139,6 +145,12 @@ export function KnexAdapter(knex: Knex): Adapter {
       // If no user was found, return null
       if (dbUsers.length === 0) return null;
 
+      // Some database engines store datetimes as a numerical Unix epoch. If so,
+      // convert it to a JavaScript date.
+      if (typeof dbSessions[0].expires === "number") {
+        dbSessions[0].expires = new Date(dbSessions[0].expires);
+      }
+
       // Return the session and the user data
       return { session: dbSessions[0], user: dbUsers[0] };
     },
@@ -154,6 +166,12 @@ export function KnexAdapter(knex: Knex): Adapter {
         .where({ sessionToken: session.sessionToken })
         .limit(1);
 
+      // Some database engines store datetimes as a numerical Unix epoch. If so,
+      // convert it to a JavaScript date.
+      if (typeof dbSessions[0].expires === "number") {
+        dbSessions[0].expires = new Date(dbSessions[0].expires);
+      }
+
       // Return the session data
       return dbSessions[0];
     },
@@ -166,6 +184,12 @@ export function KnexAdapter(knex: Knex): Adapter {
 
       // Delete a session row based on the given token
       await knex("Session").where({ sessionToken }).del();
+
+      // Some database engines store datetimes as a numerical Unix epoch. If so,
+      // convert it to a JavaScript date.
+      if (typeof dbSessions[0].expires === "number") {
+        dbSessions[0].expires = new Date(dbSessions[0].expires);
+      }
 
       // Return the session data
       return dbSessions[0];
